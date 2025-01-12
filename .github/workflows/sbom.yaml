@@ -2,8 +2,9 @@ name: "Generate SBOM file"
 
 on:
   push:
-    tags:
-      - sbom*
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 permissions:
   contents: write
