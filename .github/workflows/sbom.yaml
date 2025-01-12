@@ -1,1 +1,31 @@
+name: "Generate SBOM file"
 
+on:
+  push:
+    tags:
+      - sbom*
+
+permissions:
+  contents: write
+  pull-requests: write
+  security-events: write
+  actions: read
+
+jobs:
+  create_sbom:
+    runs-on: ubuntu-latest
+    name: Generate SBOM file
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+      - name: SBOM create
+        uses: anchore/sbom-action@v0
+        with:
+          path: ./
+          artifact-name: sbom.spdx
+      - name: Upload SBOM Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: SBOM
+          path: sbom.spdx
+          retention-days: 14
